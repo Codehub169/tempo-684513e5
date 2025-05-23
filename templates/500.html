@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}Server Error - Cyberpunk Game Hub{% endblock %}
+
+{% block content %}
+<div class="container text-center" style="padding-top: 50px; padding-bottom: 50px; text-align: center;">
+    <h1 style="font-size: 5em; color: var(--error-color, #E74C3C);">500</h1>
+    <h2 style="color: var(--highlight-color, #F1C40F);">CRITICAL_SYSTEM_ERROR: INTERNAL_SERVER_MALFUNCTION</h2>
+    <p style="font-size: 1.2em; color: var(--primary-text, #ECF0F1);">
+        Our systems have encountered a glitch in the matrix. We're dispatching a netrunner to resolve the issue.
+    </p>
+    <p style="color: var(--primary-text, #ECF0F1);">
+        Please try again later or contact support if the issue persists.
+    </p>
+    <div style="margin-top: 30px;">
+        <a href="{{ url_for('home') }}" class="btn">Return to Mainframe</a>
+        <a href="{{ url_for('games_selection') }}" class="btn btn-secondary" style="margin-left: 15px;">Check Other Systems</a>
+    </div>
+</div>
+{% endblock %}
