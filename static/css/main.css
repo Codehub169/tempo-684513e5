@@ -1,0 +1,499 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+/* Global Styles */
+body {
+    background-color: #1A1A2E;
+    color: #E0E0E0;
+    font-family: 'Roboto Mono', monospace;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.cyberpunk-theme {
+    /* This class is on body, can be used for overrides or specific targeting */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+    color: #E94560; /* Neon Pink */
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 3px rgba(233, 69, 96, 0.7);
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+a {
+    color: #53B8BB; /* Cyan */
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+a:hover, a:focus {
+    color: #E94560; /* Neon Pink */
+    text-shadow: 0 0 8px rgba(233, 69, 96, 0.9);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: rgba(15, 52, 96, 0.2); /* Deep Blue with opacity */
+    border: 1px solid #53B8BB; /* Cyan */
+    box-shadow: 0 0 20px rgba(83, 184, 187, 0.3);
+    border-radius: 5px;
+}
+
+/* Header */
+header {
+    background-color: rgba(15, 52, 96, 0.6); /* Deep Blue with opacity */
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #E94560; /* Neon Pink */
+    backdrop-filter: blur(4px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2em;
+    color: #E94560; /* Neon Pink */
+    text-shadow: 0 0 10px rgba(233, 69, 96, 0.9);
+}
+
+header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 25px;
+}
+
+header nav ul li a {
+    font-family: 'Roboto Mono', monospace;
+    color: #E0E0E0;
+    font-size: 1.1em;
+    padding: 8px 15px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+header nav ul li a:hover,
+header nav ul li a.active {
+    color: #1A1A2E; /* Dark Violet */
+    background-color: #E94560; /* Neon Pink */
+    border-color: #E94560;
+    box-shadow: 0 0 10px rgba(233, 69, 96, 0.7);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 25px;
+    margin-top: 40px;
+    background-color: rgba(15, 52, 96, 0.4); /* Deep Blue with opacity */
+    border-top: 1px solid #53B8BB; /* Cyan */
+    font-size: 0.9em;
+    color: #a0a0a0;
+}
+
+/* Buttons */
+.btn {
+    background-color: #E94560; /* Neon Pink */
+    color: #1A1A2E; /* Dark Violet */
+    border: none;
+    padding: 12px 28px;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    letter-spacing: 1.2px;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(233, 69, 96, 0.7);
+    display: inline-block;
+    text-align: center;
+}
+
+.btn:hover, .btn:focus {
+    background-color: #53B8BB; /* Cyan */
+    color: #1A1A2E;
+    box-shadow: 0 0 15px rgba(83, 184, 187, 0.8);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #0F3460; /* Deep Blue */
+    color: #E0E0E0;
+    border: 1px solid #53B8BB;
+}
+
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: #53B8BB;
+    border-color: #53B8BB;
+    color: #1A1A2E;
+}
+
+/* Home Page - Hero Section */
+.hero {
+    text-align: center;
+    padding: 70px 25px;
+    background-size: cover;
+    background-position: center center;
+    color: #fff;
+    border-bottom: 3px solid #E94560; /* Neon Pink */
+    margin-bottom: 30px;
+    border-radius: 0 0 5px 5px;
+}
+
+.hero h1 {
+    font-size: 3.2em;
+    margin-bottom: 20px;
+    color: #fff; /* Override default heading for better visibility on image */
+    text-shadow: 0 0 15px #E94560, 0 0 25px #000, 0 0 5px #000;
+}
+
+.hero p {
+    font-size: 1.25em;
+    margin-bottom: 35px;
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 0 0 10px #000, 0 0 5px #000;
+    line-height: 1.7;
+}
+
+/* Home Page - Features Overview */
+.features-overview {
+    padding: 30px 0;
+}
+
+.features-overview h2 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 40px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.feature-box {
+    background-color: rgba(15, 52, 96, 0.5); /* Deep Blue with opacity */
+    padding: 30px;
+    border: 1px solid #53B8BB; /* Cyan */
+    border-radius: 5px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(83, 184, 187, 0.5);
+}
+
+.feature-box .icon {
+    font-size: 3em;
+    color: #E94560; /* Neon Pink */
+    margin-bottom: 15px;
+}
+
+.feature-box h3 {
+    color: #53B8BB; /* Cyan */
+    margin-bottom: 10px;
+    font-size: 1.6em;
+}
+
+.feature-box p {
+    font-size: 0.95em;
+    color: #C0C0C0;
+}
+
+/* Game Selection Page */
+.page-heading {
+    text-align: center;
+    font-size: 2.8em;
+    margin-bottom: 40px;
+}
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+.game-card {
+    background-color: rgba(15, 52, 96, 0.7); /* Deep Blue with opacity */
+    border: 1px solid #53B8BB; /* Cyan */
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.game-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(83, 184, 187, 0.6);
+}
+
+.game-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 2px solid #E94560; /* Neon Pink */
+    border-radius: 3px;
+}
+
+.game-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: #E94560; /* Neon Pink */
+    margin-bottom: 10px;
+    font-size: 1.7em;
+}
+
+.game-card p {
+    font-size: 0.9em;
+    color: #D0D0D0;
+    margin-bottom: 20px;
+    flex-grow: 1;
+    line-height: 1.5;
+}
+
+.game-card .btn {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Game Play Page */
+#game-container {
+    min-height: 450px;
+    background-color: rgba(0,0,0,0.4);
+    border: 2px dashed #53B8BB; /* Cyan */
+    display: flex;
+    flex-direction: column; /* Ensure children stack vertically */
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6em;
+    color: #53B8BB;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 5px;
+    position: relative; /* For absolute positioned child elements in games */
+}
+
+.game-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.game-info h2 {
+    font-size: 2.2em;
+}
+
+.game-info p {
+    max-width: 700px;
+    margin: 0 auto 15px auto;
+    color: #C0C0C0;
+}
+
+/* About Page */
+.about-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: rgba(15, 52, 96, 0.3);
+    border-left: 4px solid #E94560;
+    border-radius: 4px;
+}
+
+.about-section h2 {
+    font-size: 2em;
+    border-bottom: 1px solid #53B8BB;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+}
+
+/* Styles for elements dynamically added by game JS */
+#game-container h3.game-title-style {
+    font-family: 'Orbitron', sans-serif;
+    color: #E94560; /* Neon Pink */
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+    text-shadow: 0 0 5px rgba(233, 69, 96, 0.7);
+}
+
+#game-container p.game-text-style {
+    font-family: 'Roboto Mono', monospace;
+    color: #E0E0E0;
+    text-align: center;
+    line-height: 1.5;
+    font-size: 1rem; /* Relative to #game-container font-size */
+}
+
+#game-container .game-button {
+    background-color: #E94560; /* Neon Pink */
+    color: #1A1A2E; /* Dark Violet */
+    border: none;
+    padding: 12px 25px;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(233, 69, 96, 0.7);
+    display: block; /* Or inline-block if preferred */
+    margin: 15px auto;
+    font-size: 0.8em; /* Relative to #game-container font-size */
+}
+
+#game-container .game-button:hover {
+    background-color: #53B8BB; /* Cyan */
+    color: #1A1A2E;
+    box-shadow: 0 0 15px rgba(83, 184, 187, 0.8);
+}
+
+#game-container .game-button:active {
+    transform: scale(0.95);
+}
+
+#game-container input[type="text"].game-input-style,
+#game-container input[type="number"].game-input-style {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background-color: rgba(224, 224, 224, 0.1);
+    border: 1px solid #53B8BB; /* Cyan */
+    color: #E0E0E0;
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    width: clamp(150px, 50%, 250px);
+    display: block;
+    margin: 10px auto;
+    border-radius: 3px;
+    font-size: 0.9rem; /* Relative to #game-container font-size */
+}
+
+#game-container input[type="text"].game-input-style::placeholder,
+#game-container input[type="number"].game-input-style::placeholder {
+    color: rgba(224, 224, 224, 0.5);
+}
+
+/* Material Icons */
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px; /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+    vertical-align: middle; /* Align icons nicely with text */
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+    background-color: #1A1A2E;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #0F3460; /* Deep Blue */
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.4);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #E94560; /* Neon Pink */
+    border-radius: 10px;
+    border: 2px solid #1A1A2E; /* Dark Violet */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #53B8BB; /* Cyan */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    body {
+        font-size: 15px;
+    }
+    header {
+        flex-direction: column;
+        padding: 15px;
+    }
+    header .logo {
+        margin-bottom: 10px;
+        font-size: 1.8em;
+    }
+    header nav ul {
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    header nav ul li a {
+        font-size: 1em;
+        padding: 6px 10px;
+    }
+    .container {
+        margin: 15px;
+        padding: 15px;
+    }
+    .hero h1 {
+        font-size: 2.5em;
+    }
+    .hero p {
+        font-size: 1.1em;
+    }
+    .page-heading {
+        font-size: 2.2em;
+    }
+    #game-container {
+        font-size: 1.3em;
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-grid {
+        grid-template-columns: 1fr; /* Stack cards on smallest screens */
+    }
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+    #game-container .game-button {
+        padding: 10px 20px;
+        font-size: 0.7em;
+    }
+    #game-container input[type="text"].game-input-style,
+    #game-container input[type="number"].game-input-style {
+        font-size: 0.8rem;
+    }
+
+}

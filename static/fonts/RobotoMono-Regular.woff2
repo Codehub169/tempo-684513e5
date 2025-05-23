@@ -1,0 +1,3 @@
+/* Since I cannot generate binary files, I will update layout.html to use a CDN link for Roboto Mono font. Please ensure you have an internet connection for the font to load when running the application. */
+
+/* Placeholder for RobotoMono-Regular.woff2. If you have the file, place it in static/fonts/. Otherwise, the CDN link in layout.html will be used. */

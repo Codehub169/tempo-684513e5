@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}Playing: {{ game.name }} - Cyberpunk Game Hub{% endblock %}
+
+{% block content %}
+<div class="game-play-area" style="padding: 20px; display: flex; flex-direction: column; align-items: center;">
+    <h1 style="font-family: 'Orbitron', sans-serif; color: #E94560; margin-bottom: 10px; font-size: 2.5em;">{{ game.name }}</h1>
+    <p style="font-family: 'Roboto Mono', monospace; color: #53B8BB; margin-bottom: 20px; font-size: 1.1em; text-align: center;">{{ game.description }}</p>
+    
+    <!-- This container is where the game will be rendered by its JavaScript -->
+    <div id="game-container" style="width: 80%; max-width: 800px; min-height: 400px; background-color: #000; border: 2px solid #E94560; border-radius: 8px; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; color: #E0E0E0; font-size: 1.2em; text-align:center;">
+        <!-- Game will load here. Add placeholder text if JS fails or game is text-based -->
+        Loading {{ game.name }}...
+    </div>
+
+    <div class="game-controls-info" style="text-align: center; margin-bottom: 30px; color: #E0E0E0; font-size: 0.9em;">
+        <!-- This section can be populated by individual game JS if needed, or provide generic info -->
+        <p>Game controls and instructions will appear here if provided by the game script.</p>
+    </div>
+
+    <a href="{{ url_for('games_selection') }}" class="back-button" style="background-color: #53B8BB; color: #1A1A2E; padding: 10px 25px; text-decoration: none; font-family: 'Orbitron', sans-serif; border-radius: 5px; font-size: 1em; transition: background-color 0.3s ease;">
+        &lt;&lt; Back to Games
+    </a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }} <!-- Includes scripts from layout.html if any -->
+    <!-- Load the specific game's JavaScript file -->
+    <script src="{{ url_for('static', filename=game.script_path) }}"></script>
+    <script>
+        // Optional: Add a small delay or check for game initialization
+        // to remove the 'Loading...' text from the game-container.
+        // For example, the game script itself could clear the container.
+        document.addEventListener('DOMContentLoaded', function() {
+            const gameContainer = document.getElementById('game-container');
+            if (gameContainer) {
+                // Game scripts should ideally manage the content of game-container themselves.
+                // This is a fallback or initial state.
+                console.log('Game container ready for {{ game.name }}');
+            }
+        });
+    </script>
+{% endblock %}
