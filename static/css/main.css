@@ -1,70 +1,94 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 /* Global Styles */
+:root {
+    --primary-bg: #2C3E50; /* Dark Slate Blue */
+    --primary-text: #ECF0F1; /* Cloud White */
+    --accent-1: #1ABC9C; /* Turquoise - main interactive elements, headings */
+    --accent-2: #3498DB; /* Bright Blue - secondary interactive, borders */
+    --accent-3: #2980B9; /* Darker Bright Blue - for depth, or alternate borders */
+    --highlight-color: #F1C40F; /* Sunflower Yellow - for highlights, warnings */
+    --error-color: #E74C3C; /* Alizarin Crimson - for errors */
+    --success-color: #2ECC71; /* Emerald Green - for success messages */
+    --container-bg: rgba(44, 62, 80, 0.85); /* Semi-transparent primary bg */
+    --container-bg-lighter: rgba(52, 73, 94, 0.6); /* Lighter version for some elements */
+    --container-bg-darker: rgba(20, 30, 40, 0.8); /* Darker for game container backdrop */
+    --button-text-dark: #2C3E50; /* For buttons with light backgrounds */
+    --text-color: var(--primary-text); /* Alias for general text */
+}
+
 body {
-    background-color: #1A1A2E;
-    color: #E0E0E0;
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
     font-family: 'Roboto Mono', monospace;
     margin: 0;
     padding: 0;
     line-height: 1.6;
     font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .cyberpunk-theme {
     /* This class is on body, can be used for overrides or specific targeting */
 }
 
+main.container {
+    flex-grow: 1;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Orbitron', sans-serif;
-    color: #E94560; /* Neon Pink */
+    color: var(--accent-1); 
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    text-shadow: 0 0 3px rgba(233, 69, 96, 0.7);
+    text-shadow: 0 0 5px rgba(26, 188, 156, 0.5);
     margin-top: 1.5em;
     margin-bottom: 0.8em;
 }
 
 a {
-    color: #53B8BB; /* Cyan */
+    color: var(--accent-2);
     text-decoration: none;
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 a:hover, a:focus {
-    color: #E94560; /* Neon Pink */
-    text-shadow: 0 0 8px rgba(233, 69, 96, 0.9);
+    color: var(--accent-1);
+    text-shadow: 0 0 8px rgba(26, 188, 156, 0.7);
 }
 
 .container {
     max-width: 1200px;
     margin: 30px auto;
     padding: 25px;
-    background-color: rgba(15, 52, 96, 0.2); /* Deep Blue with opacity */
-    border: 1px solid #53B8BB; /* Cyan */
-    box-shadow: 0 0 20px rgba(83, 184, 187, 0.3);
+    background-color: var(--container-bg);
+    border: 1px solid var(--accent-2);
+    box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
     border-radius: 5px;
+    width: 90%; /* Ensure container does not touch screen edges on smaller viewports */
 }
 
 /* Header */
-header {
-    background-color: rgba(15, 52, 96, 0.6); /* Deep Blue with opacity */
+header.site-header {
+    background-color: rgba(44, 62, 80, 0.7); /* Slightly transparent primary bg */
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #E94560; /* Neon Pink */
-    backdrop-filter: blur(4px);
+    border-bottom: 2px solid var(--accent-1);
+    backdrop-filter: blur(5px);
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
-header .logo {
+header .nav-logo {
     font-family: 'Orbitron', sans-serif;
     font-size: 2.2em;
-    color: #E94560; /* Neon Pink */
-    text-shadow: 0 0 10px rgba(233, 69, 96, 0.9);
+    color: var(--accent-1);
+    text-shadow: 0 0 10px rgba(26, 188, 156, 0.7);
 }
 
 header nav ul {
@@ -77,7 +101,7 @@ header nav ul {
 
 header nav ul li a {
     font-family: 'Roboto Mono', monospace;
-    color: #E0E0E0;
+    color: var(--primary-text);
     font-size: 1.1em;
     padding: 8px 15px;
     border: 1px solid transparent;
@@ -87,79 +111,82 @@ header nav ul li a {
 
 header nav ul li a:hover,
 header nav ul li a.active {
-    color: #1A1A2E; /* Dark Violet */
-    background-color: #E94560; /* Neon Pink */
-    border-color: #E94560;
-    box-shadow: 0 0 10px rgba(233, 69, 96, 0.7);
+    color: var(--button-text-dark);
+    background-color: var(--accent-1);
+    border-color: var(--accent-1);
+    box-shadow: 0 0 10px rgba(26, 188, 156, 0.7);
 }
 
 /* Footer */
-footer {
+footer.site-footer {
     text-align: center;
     padding: 25px;
-    margin-top: 40px;
-    background-color: rgba(15, 52, 96, 0.4); /* Deep Blue with opacity */
-    border-top: 1px solid #53B8BB; /* Cyan */
+    margin-top: auto; /* Pushes footer to bottom if content is short */
+    background-color: rgba(44, 62, 80, 0.5);
+    border-top: 1px solid var(--accent-2);
     font-size: 0.9em;
-    color: #a0a0a0;
+    color: #BDC3C7; /* Lighter gray for footer text */
 }
 
 /* Buttons */
 .btn {
-    background-color: #E94560; /* Neon Pink */
-    color: #1A1A2E; /* Dark Violet */
+    background-color: var(--accent-1);
+    color: var(--button-text-dark);
     border: none;
     padding: 12px 28px;
     font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
     cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
     letter-spacing: 1.2px;
     border-radius: 3px;
-    box-shadow: 0 0 5px rgba(233, 69, 96, 0.7);
+    box-shadow: 0 0 5px rgba(26, 188, 156, 0.7);
     display: inline-block;
     text-align: center;
+    text-decoration: none; /* Ensure links styled as buttons have no underline */
 }
 
 .btn:hover, .btn:focus {
-    background-color: #53B8BB; /* Cyan */
-    color: #1A1A2E;
-    box-shadow: 0 0 15px rgba(83, 184, 187, 0.8);
+    background-color: var(--accent-2);
+    color: var(--primary-text);
+    box-shadow: 0 0 15px rgba(52, 152, 219, 0.8);
     transform: translateY(-2px);
 }
 
 .btn-secondary {
-    background-color: #0F3460; /* Deep Blue */
-    color: #E0E0E0;
-    border: 1px solid #53B8BB;
+    background-color: var(--accent-3);
+    color: var(--primary-text);
+    border: 1px solid var(--accent-2);
 }
 
 .btn-secondary:hover, .btn-secondary:focus {
-    background-color: #53B8BB;
-    border-color: #53B8BB;
-    color: #1A1A2E;
+    background-color: var(--accent-2);
+    border-color: var(--accent-2);
+    color: var(--button-text-dark);
 }
 
 /* Home Page - Hero Section */
-.hero {
+.hero-section {
     text-align: center;
-    padding: 70px 25px;
-    background-size: cover;
-    background-position: center center;
-    color: #fff;
-    border-bottom: 3px solid #E94560; /* Neon Pink */
-    margin-bottom: 30px;
-    border-radius: 0 0 5px 5px;
+}
+.hero-section .hero-image {
+    width: 100%;
+    max-height: 400px; /* Adjust as needed */
+    object-fit: cover;
+    display: block; /* Remove extra space below image */
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 2px solid var(--accent-1);
 }
 
-.hero h1 {
+.hero-section h1 {
     font-size: 3.2em;
     margin-bottom: 20px;
-    color: #fff; /* Override default heading for better visibility on image */
-    text-shadow: 0 0 15px #E94560, 0 0 25px #000, 0 0 5px #000;
+    color: #fff; /* Keep white for visibility on image */
+    text-shadow: 0 0 15px var(--accent-1), 0 0 25px #000, 0 0 5px #000;
 }
 
-.hero p {
+.hero-section p.hero-subtitle {
     font-size: 1.25em;
     margin-bottom: 35px;
     max-width: 750px;
@@ -167,6 +194,7 @@ footer {
     margin-right: auto;
     text-shadow: 0 0 10px #000, 0 0 5px #000;
     line-height: 1.7;
+    color: var(--primary-text);
 }
 
 /* Home Page - Features Overview */
@@ -186,35 +214,35 @@ footer {
     gap: 25px;
 }
 
-.feature-box {
-    background-color: rgba(15, 52, 96, 0.5); /* Deep Blue with opacity */
+.feature-item {
+    background-color: var(--container-bg-lighter);
     padding: 30px;
-    border: 1px solid #53B8BB; /* Cyan */
+    border: 1px solid var(--accent-2);
     border-radius: 5px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.feature-box:hover {
+.feature-item:hover {
     transform: translateY(-8px);
-    box-shadow: 0 8px 20px rgba(83, 184, 187, 0.5);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.5);
 }
 
-.feature-box .icon {
+.feature-item .icon {
     font-size: 3em;
-    color: #E94560; /* Neon Pink */
+    color: var(--accent-1);
     margin-bottom: 15px;
 }
 
-.feature-box h3 {
-    color: #53B8BB; /* Cyan */
+.feature-item h3 {
+    color: var(--accent-2);
     margin-bottom: 10px;
     font-size: 1.6em;
 }
 
-.feature-box p {
+.feature-item p {
     font-size: 0.95em;
-    color: #C0C0C0;
+    color: #BDC3C7; /* Lighter gray */
 }
 
 /* Game Selection Page */
@@ -232,8 +260,8 @@ footer {
 }
 
 .game-card {
-    background-color: rgba(15, 52, 96, 0.7); /* Deep Blue with opacity */
-    border: 1px solid #53B8BB; /* Cyan */
+    background-color: var(--container-bg);
+    border: 1px solid var(--accent-2);
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -246,55 +274,104 @@ footer {
 
 .game-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 25px rgba(83, 184, 187, 0.6);
+    box-shadow: 0 10px 25px rgba(52, 152, 219, 0.6);
 }
 
-.game-card img {
+.game-card img.game-card-image {
     width: 100%;
     height: 200px;
     object-fit: cover;
     margin-bottom: 15px;
-    border: 2px solid #E94560; /* Neon Pink */
+    border: 2px solid var(--accent-1);
     border-radius: 3px;
 }
 
-.game-card h3 {
+.game-card h2.game-card-title {
     font-family: 'Orbitron', sans-serif;
-    color: #E94560; /* Neon Pink */
+    color: var(--accent-1);
     margin-bottom: 10px;
     font-size: 1.7em;
 }
 
-.game-card p {
+.game-card p.game-card-description {
     font-size: 0.9em;
-    color: #D0D0D0;
+    color: #BDC3C7; /* Lighter gray */
     margin-bottom: 20px;
     flex-grow: 1;
     line-height: 1.5;
 }
 
-.game-card .btn {
+.game-card .btn.play-button {
     width: 80%;
     margin: 0 auto;
 }
 
 /* Game Play Page */
-#game-container {
-    min-height: 450px;
-    background-color: rgba(0,0,0,0.4);
-    border: 2px dashed #53B8BB; /* Cyan */
+.game-play-area {
+    padding: 20px;
     display: flex;
-    flex-direction: column; /* Ensure children stack vertically */
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    font-size: 1.6em;
-    color: #53B8BB;
-    padding: 25px;
-    margin-bottom: 25px;
-    border-radius: 5px;
-    position: relative; /* For absolute positioned child elements in games */
+    width: 100%;
+    box-sizing: border-box;
 }
 
+.game-play-area > h1 {
+    margin-bottom: 10px;
+    font-size: 2.5em;
+    text-align: center;
+}
+
+.game-play-area > p.game-description {
+    font-family: 'Roboto Mono', monospace;
+    color: var(--accent-2);
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    text-align: center;
+    max-width: 800px;
+}
+
+#game-container {
+    width: 80%;
+    max-width: 800px;
+    min-height: 450px;
+    background-color: var(--container-bg-darker);
+    border: 2px solid var(--accent-1);
+    border-radius: 8px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-text);
+    font-size: 1.6em;
+    text-align: center;
+    padding: 25px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.game-controls-info {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-text);
+    font-size: 0.9em;
+    max-width: 800px;
+}
+
+.btn.back-to-games-button {
+    background-color: var(--accent-2);
+    color: var(--button-text-dark);
+    padding: 10px 25px; /* Specific padding if different from .btn */
+    font-size: 1em; /* Specific font size if different */
+}
+
+.btn.back-to-games-button:hover, .btn.back-to-games-button:focus {
+    background-color: var(--accent-1);
+    color: var(--button-text-dark);
+}
+
+/* Game Info section (if used elsewhere or by game JS) */
 .game-info {
     text-align: center;
     margin-bottom: 20px;
@@ -307,46 +384,97 @@ footer {
 .game-info p {
     max-width: 700px;
     margin: 0 auto 15px auto;
-    color: #C0C0C0;
+    color: #BDC3C7;
 }
 
 /* About Page */
+.about-page-container {
+    padding: 30px 20px;
+    color: var(--primary-text);
+}
+
+.about-page-container > h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 3em;
+}
+
 .about-section {
     margin-bottom: 30px;
-    padding: 20px;
-    background-color: rgba(15, 52, 96, 0.3);
-    border-left: 4px solid #E94560;
-    border-radius: 4px;
+    padding: 25px;
+    background-color: var(--container-bg-lighter);
+    border-radius: 8px;
 }
 
 .about-section h2 {
-    font-size: 2em;
-    border-bottom: 1px solid #53B8BB;
-    padding-bottom: 8px;
+    /* Shared styles for all about-section h2 */
+    font-family: 'Orbitron', sans-serif;
+    margin-top: 0;
     margin-bottom: 15px;
+    font-size: 2em;
+    border-bottom: 1px solid var(--accent-3); 
+    padding-bottom: 8px;
+}
+
+.about-section.vision-section {
+    border-left: 5px solid var(--accent-1);
+}
+.about-section.vision-section h2 {
+    color: var(--accent-2);
+}
+
+.about-section.aesthetic-section {
+    border-left: 5px solid var(--accent-2);
+}
+.about-section.aesthetic-section h2 {
+    color: var(--accent-1);
+}
+
+.about-section.tech-section {
+    border-left: 5px solid var(--accent-1);
+}
+.about-section.tech-section h2 {
+    color: var(--accent-2);
+}
+.about-section.tech-section ul {
+    list-style-type: square;
+    padding-left: 20px; /* Relative to ul's position */
+    margin-left: 20px; /* Indent the ul itself */
+    font-size: 1.1em;
+    line-height: 1.7;
+}
+
+.about-section.final-message p {
+    font-size: 1.2em;
+    color: var(--accent-2);
+    text-align: center;
+    margin-top: 40px;
+    background-color: transparent; /* Ensure no bg from .about-section */
+    border-left: none; /* Ensure no border from .about-section */
+    padding: 0;
 }
 
 /* Styles for elements dynamically added by game JS */
 #game-container h3.game-title-style {
     font-family: 'Orbitron', sans-serif;
-    color: #E94560; /* Neon Pink */
+    color: var(--accent-1);
     text-align: center;
     margin-bottom: 20px;
-    font-size: 2em;
-    text-shadow: 0 0 5px rgba(233, 69, 96, 0.7);
+    font-size: 2em; /* This is 2em of #game-container's 1.6em base */
+    text-shadow: 0 0 5px rgba(26, 188, 156, 0.7);
 }
 
 #game-container p.game-text-style {
     font-family: 'Roboto Mono', monospace;
-    color: #E0E0E0;
+    color: var(--primary-text);
     text-align: center;
     line-height: 1.5;
-    font-size: 1rem; /* Relative to #game-container font-size */
+    font-size: 1rem; /* Relative to #game-container font-size (1.6em parent) */
 }
 
 #game-container .game-button {
-    background-color: #E94560; /* Neon Pink */
-    color: #1A1A2E; /* Dark Violet */
+    background-color: var(--accent-1);
+    color: var(--button-text-dark);
     border: none;
     padding: 12px 25px;
     font-family: 'Orbitron', sans-serif;
@@ -355,16 +483,16 @@ footer {
     transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
     letter-spacing: 1px;
     border-radius: 3px;
-    box-shadow: 0 0 5px rgba(233, 69, 96, 0.7);
-    display: block; /* Or inline-block if preferred */
+    box-shadow: 0 0 5px rgba(26, 188, 156, 0.7);
+    display: block; 
     margin: 15px auto;
     font-size: 0.8em; /* Relative to #game-container font-size */
 }
 
 #game-container .game-button:hover {
-    background-color: #53B8BB; /* Cyan */
-    color: #1A1A2E;
-    box-shadow: 0 0 15px rgba(83, 184, 187, 0.8);
+    background-color: var(--accent-2);
+    color: var(--primary-text);
+    box-shadow: 0 0 15px rgba(52, 152, 219, 0.8);
 }
 
 #game-container .game-button:active {
@@ -375,9 +503,9 @@ footer {
 #game-container input[type="number"].game-input-style {
     padding: 10px 15px;
     margin-bottom: 10px;
-    background-color: rgba(224, 224, 224, 0.1);
-    border: 1px solid #53B8BB; /* Cyan */
-    color: #E0E0E0;
+    background-color: rgba(236, 240, 241, 0.1);
+    border: 1px solid var(--accent-2);
+    color: var(--primary-text);
     font-family: 'Roboto Mono', monospace;
     text-align: center;
     width: clamp(150px, 50%, 250px);
@@ -389,7 +517,7 @@ footer {
 
 #game-container input[type="text"].game-input-style::placeholder,
 #game-container input[type="number"].game-input-style::placeholder {
-    color: rgba(224, 224, 224, 0.5);
+    color: rgba(189, 195, 199, 0.7);
 }
 
 /* Material Icons */
@@ -416,23 +544,23 @@ footer {
 ::-webkit-scrollbar {
     width: 12px;
     height: 12px;
-    background-color: #1A1A2E;
+    background-color: var(--primary-bg);
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #0F3460; /* Deep Blue */
+    background-color: var(--container-bg-darker);
     border-radius: 10px;
     box-shadow: inset 0 0 6px rgba(0,0,0,0.4);
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #E94560; /* Neon Pink */
+    background-color: var(--accent-1);
     border-radius: 10px;
-    border: 2px solid #1A1A2E; /* Dark Violet */
+    border: 2px solid var(--primary-bg);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #53B8BB; /* Cyan */
+    background-color: var(--accent-2);
 }
 
 /* Responsive Adjustments */
@@ -440,11 +568,12 @@ footer {
     body {
         font-size: 15px;
     }
-    header {
+    header.site-header {
         flex-direction: column;
         padding: 15px;
+        text-align: center;
     }
-    header .logo {
+    header .nav-logo {
         margin-bottom: 10px;
         font-size: 1.8em;
     }
@@ -458,13 +587,14 @@ footer {
         padding: 6px 10px;
     }
     .container {
-        margin: 15px;
+        margin: 15px auto;
         padding: 15px;
+        width: 95%;
     }
-    .hero h1 {
+    .hero-section h1 {
         font-size: 2.5em;
     }
-    .hero p {
+    .hero-section p.hero-subtitle {
         font-size: 1.1em;
     }
     .page-heading {
@@ -473,6 +603,7 @@ footer {
     #game-container {
         font-size: 1.3em;
         min-height: 350px;
+        width: 95%;
     }
 }
 
@@ -483,17 +614,25 @@ footer {
     .features-grid {
         grid-template-columns: 1fr;
     }
-    .btn {
+    .btn,
+    .btn.back-to-games-button {
         padding: 10px 20px;
         font-size: 0.9em;
     }
     #game-container .game-button {
         padding: 10px 20px;
-        font-size: 0.7em;
+        font-size: 0.7em; /* Relative to #game-container's changed font-size */
     }
     #game-container input[type="text"].game-input-style,
     #game-container input[type="number"].game-input-style {
-        font-size: 0.8rem;
+        font-size: 0.8rem; /* Relative to #game-container's changed font-size */
     }
-
+    .container {
+        width: calc(100% - 20px); /* Ensure padding isn't eaten by 100% width */
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    #game-container {
+         width: calc(100% - 20px);
+    }
 }

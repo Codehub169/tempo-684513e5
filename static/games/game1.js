@@ -24,6 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
         clickButton.style.padding = '20px 40px'; // Larger button for this game
         clickButton.style.fontSize = '1em';
 
+        const rootStyles = getComputedStyle(document.documentElement);
+        const colorChoices = [
+            rootStyles.getPropertyValue('--accent-1').trim() || '#1ABC9C',
+            rootStyles.getPropertyValue('--accent-2').trim() || '#3498DB',
+            rootStyles.getPropertyValue('--highlight-color').trim() || '#F1C40F'
+        ];
+
         // Click event handler
         clickButton.addEventListener('click', () => {
             score++;
@@ -37,26 +44,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const randomY = Math.random() * 40 + 20; // % from top
             feedback.style.left = `${randomX}%`;
             feedback.style.top = `${randomY}%`;
-            feedback.style.color = ['#E94560', '#53B8BB', '#FFFF00'][Math.floor(Math.random() * 3)];
+            feedback.style.color = colorChoices[Math.floor(Math.random() * colorChoices.length)];
             feedback.style.fontSize = `${Math.random() * 1 + 1}em`; // Random size
-            feedback.style.fontFamily = '"Roboto Mono", monospace';
+            feedback.style.fontFamily = '"Roboto Mono", monospace'; // Correctly quote font name with spaces
             feedback.style.opacity = '1';
             feedback.style.transition = 'opacity 0.7s ease-out, transform 0.7s ease-out';
             feedback.style.pointerEvents = 'none'; // Prevent interaction
             feedback.style.textShadow = '0 0 5px currentColor';
             gameContainer.appendChild(feedback);
 
-            // Animate feedback
-            setTimeout(() => {
+            // Animate feedback using requestAnimationFrame for smoother visuals
+            requestAnimationFrame(() => {
                 feedback.style.opacity = '0';
                 feedback.style.transform = `translate(${Math.random()*40-20}px, -50px) scale(0.5) rotate(${Math.random()*60-30}deg)`;
-            }, 0);
+            });
 
             setTimeout(() => {
-                if (feedback.parentNode) {
+                if (feedback.parentNode) { // Check if still in DOM before removing
                     feedback.remove();
                 }
-            }, 700);
+            }, 700); // Corresponds to the transition duration
         });
 
         // Assemble game in container
@@ -66,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapperDiv.style.alignItems = 'center';
         wrapperDiv.style.justifyContent = 'center';
         wrapperDiv.style.height = '100%';
-        wrapperDiv.style.textAlign = 'center';
+        wrapperDiv.style.textAlign = 'center'; // Ensures text within elements like <p> is centered if not overridden by specific styles
 
         wrapperDiv.appendChild(gameTitle);
         wrapperDiv.appendChild(scoreDisplay);

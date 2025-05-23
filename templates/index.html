@@ -3,31 +3,31 @@
 {% block title %}{{ page_title }} - Cyberpunk Game Hub{% endblock %}
 
 {% block content %}
-<div class="hero-section" style="text-align: center; padding: 50px 20px; background-color: #0F3460; border-radius: 8px; margin-bottom: 30px;">
-    <img src="https://images.unsplash.com/photo-1518364538800-6bae3c2ea5f2?q=80&w=1200&auto=format&fit=crop" alt="Cyberpunk Cityscape" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 30px; border: 2px solid #E94560;">
-    <h1 style="font-family: 'Orbitron', sans-serif; color: #E94560; font-size: 3em; margin-bottom: 20px;">Welcome to the Neon-Drenched Future</h1>
-    <p style="font-size: 1.2em; color: #E0E0E0; margin-bottom: 30px; line-height: 1.6;">
+<div class="hero-section">
+    <img src="https://images.unsplash.com/photo-1518364538800-6bae3c2ea5f2?q=80&w=1200&auto=format&fit=crop" alt="Cyberpunk Cityscape" class="hero-image">
+    <h1>Welcome to the Neon-Drenched Future</h1>
+    <p class="hero-subtitle">
         Dive into CYBERHUB, your portal to a world of retro-futuristic games. Explore dystopian landscapes, engage in high-octane challenges, and immerse yourself in the cyberpunk aesthetic.
     </p>
-    <a href="{{ url_for('games_selection') }}" class="cta-button" style="background-color: #E94560; color: #1A1A2E; padding: 15px 30px; text-decoration: none; font-family: 'Orbitron', sans-serif; font-size: 1.2em; border-radius: 5px; text-transform: uppercase; letter-spacing: 1px; transition: background-color 0.3s ease;">
+    <a href="{{ url_for('games_selection') }}" class="btn cta-button">
         Explore Games &gt;&gt;
     </a>
 </div>
 
-<section class="features-overview" style="padding: 30px 0;">
-    <h2 style="font-family: 'Orbitron', sans-serif; color: #53B8BB; text-align: center; margin-bottom: 30px; font-size: 2.5em;">What Awaits You</h2>
-    <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
-        <div class="feature-item" style="background-color: rgba(15, 52, 96, 0.7); padding: 20px; border-radius: 8px; text-align: center; width: 30%; min-width: 250px; border: 1px solid #53B8BB;">
-            <h3 style="font-family: 'Orbitron', sans-serif; color: #E94560; margin-bottom: 10px;">Curated Games</h3>
-            <p style="color: #E0E0E0; font-size: 0.9em;">A handpicked selection of games, each resonating with the cyberpunk vibe.</p>
+<section class="features-overview">
+    <h2>What Awaits You</h2>
+    <div class="features-grid">
+        <div class="feature-item">
+            <h3>Curated Games</h3>
+            <p>A handpicked selection of games, each resonating with the cyberpunk vibe.</p>
         </div>
-        <div class="feature-item" style="background-color: rgba(15, 52, 96, 0.7); padding: 20px; border-radius: 8px; text-align: center; width: 30%; min-width: 250px; border: 1px solid #53B8BB;">
-            <h3 style="font-family: 'Orbitron', sans-serif; color: #E94560; margin-bottom: 10px;">Immersive Atmosphere</h3>
-            <p style="color: #E0E0E0; font-size: 0.9em;">Lose yourself in a world of neon lights, towering skyscrapers, and digital frontiers.</p>
+        <div class="feature-item">
+            <h3>Immersive Atmosphere</h3>
+            <p>Lose yourself in a world of neon lights, towering skyscrapers, and digital frontiers.</p>
         </div>
-        <div class="feature-item" style="background-color: rgba(15, 52, 96, 0.7); padding: 20px; border-radius: 8px; text-align: center; width: 30%; min-width: 250px; border: 1px solid #53B8BB;">
-            <h3 style="font-family: 'Orbitron', sans-serif; color: #E94560; margin-bottom: 10px;">Seamless Experience</h3>
-            <p style="color: #E0E0E0; font-size: 0.9em;">Easy navigation and instant play. No downloads, no hassle.</p>
+        <div class="feature-item">
+            <h3>Seamless Experience</h3>
+            <p>Easy navigation and instant play. No downloads, no hassle.</p>
         </div>
     </div>
 </section>
