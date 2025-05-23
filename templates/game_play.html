@@ -37,7 +37,7 @@
             if (gameContainer) {
                 // Game scripts should ideally manage the content of game-container themselves.
                 // This is a fallback or initial state.
-                console.log('Game container ready for {{ game.name|escapejs }}');
+                console.log('Game container ready for ' + {{ game.name|tojson }});
             }
         });
     </script>
