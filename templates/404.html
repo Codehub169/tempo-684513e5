@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}404 - Page Not Found - Cyberpunk Game Hub{% endblock %}
+
+{% block content %}
+<div class="container text-center" style="padding-top: 50px; padding-bottom: 50px; text-align: center;">
+    <h1 style="font-size: 5em; color: var(--highlight-color, #F1C40F);">404</h1>
+    <h2 style="color: var(--accent-1, #1ABC9C);">DATA_CORRUPTION: TARGET_NOT_FOUND</h2>
+    <p style="font-size: 1.2em; color: var(--primary-text, #ECF0F1);">
+        The requested data node does not exist in this sector or has been wiped.
+    </p>
+    <p style="color: var(--primary-text, #ECF0F1);">
+        Verify the datalink or return to a known checkpoint.
+    </p>
+    <div style="margin-top: 30px;">
+        <a href="{{ url_for('home') }}" class="btn">Return to Mainframe</a>
+        <a href="{{ url_for('games_selection') }}" class="btn btn-secondary" style="margin-left: 15px;">Scan Available Games</a>
+    </div>
+</div>
+{% endblock %}
