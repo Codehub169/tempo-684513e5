@@ -1,170 +1,110 @@
+// static/games/game5.js - Code Breaker (Placeholder)
+'use strict';
 document.addEventListener('DOMContentLoaded', () => {
     const gameContainer = document.getElementById('game-container');
     if (!gameContainer) {
-        console.error('Error: Game container #game-container not found.');
+        console.error('Game container #game-container not found for Code Breaker.');
+        return;
+    }
+    let secretCode = '';
+    let attemptsLeft = 0;
+    const codeLength = 4; // Length of the code to guess
+
+    gameContainer.innerHTML = `
+        <h3 class='game-title-style'>Code Breaker</h3>
+        <p class='game-text-style'>Guess the secret ${codeLength}-digit numerical code.</p>
+        <input type='text' id='codebreaker-input' class='game-input-style' maxlength='${codeLength}' placeholder='Enter code...' style='margin-top:10px;'>
+        <div id='codebreaker-controls' style='margin-top:10px;'>
+             <button class='game-button' id='submit-guess-button' onclick='submitGuess()'>Submit Guess</button>
+             <button class='game-button' onclick='generateCode()'>New Code</button>
+        </div>
+        <p class='game-text-style'>Attempts Left: <span id='codebreaker-attempts'></span></p>
+        <div class='game-text-style' id='codebreaker-feedback' style='min-height: 3em; margin-top:10px; border: 1px solid var(--accent-3); padding: 5px;' aria-live='polite'></div>
+    `;
+
+    const attemptsElement = document.getElementById('codebreaker-attempts');
+    const feedbackElement = document.getElementById('codebreaker-feedback');
+    const inputElement = document.getElementById('codebreaker-input');
+    const submitButtonElement = document.getElementById('submit-guess-button');
+
+    if (!attemptsElement || !feedbackElement || !inputElement || !submitButtonElement) {
+        console.error('Critical game elements not found for Code Breaker.');
         return;
     }
 
-    gameContainer.innerHTML = ''; // Clear previous content
-
-    const wrapper = document.createElement('div');
-    wrapper.style.textAlign = 'center';
-
-    const title = document.createElement('h2');
-    title.textContent = 'Memory Matrix';
-    title.className = 'game-title-style';
-    wrapper.appendChild(title);
-
-    const movesDisplay = document.createElement('p');
-    movesDisplay.className = 'game-text-style';
-    movesDisplay.style.fontSize = '1.2em';
-    let moves = 0;
-    movesDisplay.textContent = `Moves: ${moves}`;
-    wrapper.appendChild(movesDisplay);
-
-    const gameGrid = document.createElement('div');
-    gameGrid.style.display = 'grid';
-    gameGrid.style.gridTemplateColumns = 'repeat(4, 1fr)'; // 4x4 grid
-    gameGrid.style.gap = '10px';
-    gameGrid.style.maxWidth = '400px';
-    gameGrid.style.margin = '20px auto';
-    wrapper.appendChild(gameGrid);
-
-    // Cyberpunk themed symbols (using Unicode or simple characters)
-    const symbols = ['⚡', '⚙️', '🔗', '💾', '📡', '💡', '☣️', '⚛️'];
-    let cards = [];
-    let flippedCards = [];
-    let matchedPairs = 0;
-    let canFlip = true;
-
-    function createBoard() {
-        moves = 0;
-        matchedPairs = 0;
-        movesDisplay.textContent = `Moves: ${moves}`;
-        gameGrid.innerHTML = '';
-        cards = [];
-        flippedCards = [];
-        canFlip = true;
-
-        let cardValues = [...symbols, ...symbols]; // Duplicate symbols for pairs
-        cardValues.sort(() => 0.5 - Math.random()); // Shuffle
-
-        for (let i = 0; i < 16; i++) {
-            const card = document.createElement('div');
-            card.classList.add('matrix-card');
-            card.dataset.value = cardValues[i];
-            card.dataset.index = i.toString();
-            card.style.width = '80px';
-            card.style.height = '80px';
-            card.style.backgroundColor = 'var(--accent-2)';
-            card.style.border = '2px solid var(--accent-3)';
-            card.style.borderRadius = '5px';
-            card.style.display = 'flex';
-            card.style.justifyContent = 'center';
-            card.style.alignItems = 'center';
-            card.style.fontSize = '2.5em';
-            card.style.cursor = 'pointer';
-            card.style.color = 'transparent'; // Hide symbol initially
-            card.style.userSelect = 'none';
-            card.style.transition = 'transform 0.3s ease, background-color 0.3s ease';
-            
-            // Inner span for the symbol, helps with reveal animation
-            const cardSymbol = document.createElement('span');
-            cardSymbol.textContent = cardValues[i];
-            cardSymbol.style.opacity = '0';
-            cardSymbol.style.transition = 'opacity 0.3s ease';
-            card.appendChild(cardSymbol);
-
-            card.addEventListener('click', handleCardClick);
-            gameGrid.appendChild(card);
-            cards.push(card);
+    function generateCode() {
+        secretCode = '';
+        for (let i = 0; i < codeLength; i++) {
+            secretCode += Math.floor(Math.random() * 10).toString(); // Code consists of digits 0-9
         }
+        attemptsLeft = 7;
+        attemptsElement.textContent = attemptsLeft;
+        feedbackElement.innerHTML = `A ${codeLength}-digit code has been set. You have ${attemptsLeft} attempts.`;
+        feedbackElement.style.color = 'var(--text-color)';
+        inputElement.value = '';
+        inputElement.disabled = false;
+        submitButtonElement.disabled = false;
+        inputElement.focus();
     }
 
-    function handleCardClick(event) {
-        if (!canFlip) return;
-        const clickedCard = event.currentTarget;
+    window.submitGuess = function() {
+        const guess = inputElement.value.trim();
+        
+        if (guess.length !== codeLength || !/^[0-9]+$/.test(guess)) {
+            feedbackElement.innerHTML = `Invalid input. Please enter a ${codeLength}-digit number.`;
+            feedbackElement.style.color = 'var(--warning-color)';
+            return;
+        }
 
-        if (flippedCards.length < 2 && !clickedCard.classList.contains('flipped') && !clickedCard.classList.contains('matched')) {
-            flipCard(clickedCard);
-            flippedCards.push(clickedCard);
+        attemptsLeft--;
+        attemptsElement.textContent = attemptsLeft;
 
-            if (flippedCards.length === 2) {
-                canFlip = false;
-                moves++;
-                movesDisplay.textContent = `Moves: ${moves}`;
-                checkForMatch();
+        if (guess === secretCode) {
+            feedbackElement.innerHTML = `CODE CRACKED! The code was ${secretCode}. You are a master cryptographer!`;
+            feedbackElement.style.color = 'var(--accent-1)';
+            inputElement.disabled = true;
+            submitButtonElement.disabled = true; // Disable submit guess only
+            return;
+        }
+
+        if (attemptsLeft <= 0) {
+            feedbackElement.innerHTML = `Out of attempts! The secret code was ${secretCode}. System lockdown initiated.`;
+            feedbackElement.style.color = 'var(--error-color)';
+            inputElement.disabled = true;
+            submitButtonElement.disabled = true;
+            return;
+        }
+
+        let correctDigits = 0;
+        let correctPositions = 0;
+        let tempSecret = secretCode.split('');
+        let tempGuess = guess.split('');
+
+        // Check for correct digits in correct positions
+        for (let i = 0; i < codeLength; i++) {
+            if (tempGuess[i] === tempSecret[i]) {
+                correctPositions++;
+                tempSecret[i] = null; // Mark as checked to avoid double counting
+                tempGuess[i] = null;  // Mark as checked
             }
         }
-    }
 
-    function flipCard(card) {
-        card.classList.add('flipped');
-        card.style.backgroundColor = 'var(--accent-1)';
-        card.style.transform = 'rotateY(180deg)';
-        card.querySelector('span').style.opacity = '1';
-        card.style.color = '#1A1A2E'; // Show symbol by changing color
-    }
-
-    function unflipCards(card1, card2) {
-        setTimeout(() => {
-            [card1, card2].forEach(card => {
-                if (!card.classList.contains('matched')) {
-                    card.classList.remove('flipped');
-                    card.style.backgroundColor = 'var(--accent-2)';
-                    card.style.transform = 'rotateY(0deg)';
-                    card.querySelector('span').style.opacity = '0';
-                    card.style.color = 'transparent';
+        // Check for correct digits in wrong positions
+        for (let i = 0; i < codeLength; i++) {
+            if (tempGuess[i] !== null) { // If this guess digit hasn't been matched for position
+                const digitIndexInSecret = tempSecret.indexOf(tempGuess[i]);
+                if (digitIndexInSecret !== -1) {
+                    correctDigits++;
+                    tempSecret[digitIndexInSecret] = null; // Mark as checked in secret to avoid double counting
                 }
-            });
-            canFlip = true;
-        }, 1000);
-    }
-
-    function checkForMatch() {
-        const [card1, card2] = flippedCards;
-        if (card1.dataset.value === card2.dataset.value) {
-            card1.classList.add('matched');
-            card2.classList.add('matched');
-            matchedPairs++;
-            canFlip = true; // Allow next flip immediately for matched pair
-            if (matchedPairs === symbols.length) {
-                endGame();
             }
-        } else {
-            unflipCards(card1, card2);
         }
-        flippedCards = [];
-    }
 
-    function endGame() {
-        canFlip = false;
-        setTimeout(() => {
-            const endMessage = document.createElement('p');
-            endMessage.className = 'game-text-style';
-            endMessage.style.fontSize = '1.5em';
-            endMessage.style.color = 'var(--accent-1)';
-            endMessage.textContent = `Matrix Decrypted! Total Moves: ${moves}`;
-            wrapper.appendChild(endMessage);
+        feedbackElement.innerHTML = `Guess: ${guess} <br> Correct Digits in Correct Position: ${correctPositions} <br> Correct Digits in Wrong Position: ${correctDigits}`;
+        feedbackElement.style.color = 'var(--info-color)';
+        inputElement.value = ''; // Clear input for next guess
+        inputElement.focus();
+    };
 
-            restartButton.style.display = 'inline-block'; // Show restart button
-        }, 500);
-    }
-
-    const restartButton = document.createElement('button');
-    restartButton.textContent = 'New Matrix Challenge';
-    restartButton.className = 'game-button';
-    restartButton.style.marginTop = '20px';
-    restartButton.addEventListener('click', () => {
-        wrapper.querySelectorAll('p.game-text-style').forEach(p => {
-            if(p !== movesDisplay) p.remove(); // Remove old end messages
-        });
-        createBoard();
-    });
-    wrapper.appendChild(restartButton);
-
-    gameContainer.appendChild(wrapper);
-    createBoard(); // Initialize the first game
-
-    console.log('Memory Matrix loaded.');
+    generateCode(); // Initialize the game
 });

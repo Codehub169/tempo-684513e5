@@ -1,4 +1,5 @@
 // static/games/game7.js - Drone Escape
+'use strict';
 document.addEventListener('DOMContentLoaded', () => {
     const gameContainer = document.getElementById('game-container');
     if (!gameContainer) {
@@ -15,68 +16,181 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const statusDisplay = document.createElement('p');
     statusDisplay.className = 'game-text-style';
-    statusDisplay.style.minHeight = '2em';
-    statusDisplay.style.marginBottom = '20px';
+    statusDisplay.style.minHeight = '4em'; // Adjusted for potentially longer messages
+    statusDisplay.style.marginBottom = '15px';
     statusDisplay.setAttribute('aria-live', 'polite');
     gameContainer.appendChild(statusDisplay);
 
-    const attemptCounter = document.createElement('p');
-    attemptCounter.className = 'game-text-style';
-    attemptCounter.style.fontSize = '0.9em';
-    attemptCounter.setAttribute('aria-live', 'polite');
-    gameContainer.appendChild(attemptCounter);
+    const integrityDisplay = document.createElement('p');
+    integrityDisplay.className = 'game-text-style';
+    integrityDisplay.style.fontSize = '1em';
+    integrityDisplay.id = 'drone-integrity';
+    gameContainer.appendChild(integrityDisplay);
 
-    const actionButton = document.createElement('button');
-    actionButton.className = 'game-button';
-    actionButton.style.marginTop = '20px';
-    gameContainer.appendChild(actionButton);
+    const distanceDisplay = document.createElement('p');
+    distanceDisplay.className = 'game-text-style';
+    distanceDisplay.style.fontSize = '1em';
+    distanceDisplay.id = 'drone-distance';
+    gameContainer.appendChild(distanceDisplay);
 
-    const outcomes = [
-        { msg: 'Narrowly avoided security patrol!', success: true },
-        { msg: 'Drone grazed by laser grid! Minor damage.', success: false },
-        { msg: 'Successful maneuver through debris field!', success: true },
-        { msg: 'EMP blast nearby! Systems temporarily offline.', success: false },
-        { msg: 'Stealth systems engaged. Undetected.', success: true },
-        { msg: 'Signal jammed! Rerouting...', success: false }
+    const choicesContainer = document.createElement('div');
+    choicesContainer.id = 'drone-choices';
+    choicesContainer.style.marginTop = '20px';
+    choicesContainer.style.display = 'flex';
+    choicesContainer.style.flexDirection = 'column';
+    choicesContainer.style.alignItems = 'center';
+    choicesContainer.style.gap = '10px';
+    gameContainer.appendChild(choicesContainer);
+
+    const restartButton = document.createElement('button');
+    restartButton.id = 'drone-restart-button';
+    restartButton.className = 'game-button';
+    restartButton.style.marginTop = '20px';
+    restartButton.style.display = 'none'; // Hidden initially
+    restartButton.onclick = startGame; // Assign directly
+    gameContainer.appendChild(restartButton);
+
+    let droneIntegrity;
+    let distanceToExtraction;
+    let currentScenario;
+
+    const MAX_INTEGRITY = 100;
+    const INITIAL_DISTANCE = 5; // Reduced for quicker gameplay testing; original was 20
+
+    const scenarios = [
+        {
+            text: 'Approaching asteroid field. Sensors detect two paths.',
+            choices: [
+                { text: 'Navigate through (Risky, -1 Distance)', risk: 0.6, integrityEffect: -25, distanceEffect: -1 },
+                { text: 'Go around (Safer, Slower)', risk: 0.2, integrityEffect: -10, distanceEffect: -1 }
+            ]
+        },
+        {
+            text: 'Security patrol detected ahead!',
+            choices: [
+                { text: 'Attempt stealth maneuver (-1 Distance)', risk: 0.5, integrityEffect: -20, distanceEffect: -1 },
+                { text: 'Deploy countermeasures and speed past (-1 Distance)', risk: 0.4, integrityEffect: -15, distanceEffect: -1 }
+            ]
+        },
+        {
+            text: 'Unstable energy signature detected.',
+            choices: [
+                { text: 'Investigate (Potential reward/damage)', risk: 0.5, integrityEffect: () => (Math.random() > 0.5 ? 10 : -30), distanceEffect: 0 },
+                { text: 'Avoid and reroute (-1 Distance)', risk: 0.1, integrityEffect: -5, distanceEffect: -1 }
+            ]
+        },
+        {
+            text: 'Clear passage. Opportunity to boost engines.',
+            choices: [
+                { text: 'Boost engines (-2 Distance, Slight Risk)', risk: 0.2, integrityEffect: -10, distanceEffect: -2 },
+                { text: 'Maintain course (-1 Distance, Safe)', risk: 0.0, integrityEffect: 0, distanceEffect: -1 }
+            ]
+        }
     ];
-    
-    const maxAttempts = 10;
-    let escapeAttempts = 0;
-    let gameJustReset = true; // Start in a state that requires initialization
 
-    function initializeGame() {
-        escapeAttempts = 0;
-        statusDisplay.textContent = 'Initiate drone evasion protocol.';
-        statusDisplay.style.color = 'var(--text-color)'; // Reset to default text color
-        attemptCounter.textContent = `Evasion Attempts: ${escapeAttempts}`;
-        actionButton.textContent = 'Evade!';
-        gameJustReset = false;
+    function updateDisplays() {
+        integrityDisplay.textContent = `Drone Integrity: ${droneIntegrity}%`;
+        distanceDisplay.textContent = `Distance to Extraction: ${distanceToExtraction} units`;
+        integrityDisplay.style.color = droneIntegrity < 30 ? 'var(--error-color)' : 'var(--text-color)';
     }
 
-    actionButton.addEventListener('click', () => {
-        if (gameJustReset) {
-            initializeGame();
-            return; // This click was to (re)start, next click is an attempt
+    function startGame() {
+        droneIntegrity = MAX_INTEGRITY;
+        distanceToExtraction = INITIAL_DISTANCE;
+        restartButton.style.display = 'none';
+        choicesContainer.style.display = 'flex'; // Ensure choices are visible
+        statusDisplay.style.color = 'var(--text-color)'; // Reset status color
+        nextScenario(); // This will also call updateDisplays
+    }
+
+    function nextScenario() {
+        updateDisplays(); // Update display at the start of a new scenario/check
+        if (distanceToExtraction <= 0) {
+            winGame();
+            return;
+        }
+        if (droneIntegrity <= 0) {
+            loseGame();
+            return;
         }
 
-        escapeAttempts++;
-        attemptCounter.textContent = `Evasion Attempts: ${escapeAttempts}`;
-        const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
-        statusDisplay.textContent = randomOutcome.msg;
+        currentScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+        statusDisplay.textContent = currentScenario.text;
+        statusDisplay.style.color = 'var(--text-color)';
 
-        if (randomOutcome.success) {
-            statusDisplay.style.color = 'var(--success-color, #2ECC71)';
-        } else {
-            statusDisplay.style.color = 'var(--highlight-color, #F1C40F)';
+        choicesContainer.innerHTML = '';
+        currentScenario.choices.forEach((choice, index) => {
+            const button = document.createElement('button');
+            button.textContent = choice.text;
+            button.className = 'game-button';
+            button.onclick = () => handleChoice(index);
+            choicesContainer.appendChild(button);
+        });
+    }
+
+    function handleChoice(choiceIndex) {
+        const chosen = currentScenario.choices[choiceIndex];
+        let outcomeMessage = '';
+
+        const baseIntegrityEffect = typeof chosen.integrityEffect === 'function' ? chosen.integrityEffect() : chosen.integrityEffect;
+
+        if (Math.random() < chosen.risk) { // Failure
+            droneIntegrity += baseIntegrityEffect; 
+            outcomeMessage = `Maneuver failed! Drone damaged. Integrity change: ${baseIntegrityEffect > 0 ? '+' : ''}${baseIntegrityEffect}%`;
+            statusDisplay.style.color = 'var(--error-color)';
+        } else { // Success
+            let integrityChangeOnSuccess = 0;
+            if (baseIntegrityEffect < 0) { // Base effect is damaging
+                integrityChangeOnSuccess = Math.floor(baseIntegrityEffect / 2); // Half damage, ensure integer
+            } else if (baseIntegrityEffect > 0) { // Base effect is positive (reward)
+                if (chosen.risk > 0.4) { // Risky positive effect gets nullified reward on success
+                    integrityChangeOnSuccess = 0;
+                } else {
+                    integrityChangeOnSuccess = baseIntegrityEffect; // Full reward
+                }
+            }
+            // If baseIntegrityEffect is 0, integrityChangeOnSuccess remains 0.
+
+            droneIntegrity += integrityChangeOnSuccess;
+            distanceToExtraction += chosen.distanceEffect;
+            
+            let successDetails = `Distance covered.`;
+            if (integrityChangeOnSuccess !== 0) {
+                successDetails += ` Integrity change: ${integrityChangeOnSuccess > 0 ? '+' : ''}${integrityChangeOnSuccess}%.`;
+            }
+            outcomeMessage = `Maneuver successful! ${successDetails}`;
+            statusDisplay.style.color = 'var(--success-color)';
         }
+        
+        droneIntegrity = Math.min(MAX_INTEGRITY, droneIntegrity);
+        droneIntegrity = Math.max(0, droneIntegrity); // Integrity cannot be less than 0
 
-        if (escapeAttempts >= maxAttempts) {
-            statusDisplay.textContent = `Drone reached extraction point after ${escapeAttempts} attempts! System clear.`;
-            statusDisplay.style.color = 'var(--accent-1, #1ABC9C)';
-            actionButton.textContent = 'Re-Deploy Drone';
-            gameJustReset = true; // Next click will reset the game
-        }
-    });
+        statusDisplay.textContent = outcomeMessage;
+        
+        choicesContainer.innerHTML = '<p class="game-text-style">Processing...</p>';
+        
+        setTimeout(() => {
+            nextScenario(); 
+        }, 2000);
+    }
 
-    initializeGame(); // Set up the game for the first play
+    function winGame() {
+        statusDisplay.textContent = 'Extraction Point Reached! Drone escaped successfully!';
+        statusDisplay.style.color = 'var(--accent-1)';
+        choicesContainer.style.display = 'none';
+        restartButton.textContent = 'New Mission';
+        restartButton.style.display = 'block';
+    }
+
+    function loseGame() {
+        droneIntegrity = 0; // Ensure integrity is 0 on loss screen
+        updateDisplays(); // Update to show 0% integrity
+        statusDisplay.textContent = 'Drone Integrity Critical! Mission Failed.';
+        statusDisplay.style.color = 'var(--error-color)';
+        choicesContainer.style.display = 'none';
+        restartButton.textContent = 'Retry Mission';
+        restartButton.style.display = 'block';
+    }
+
+    startGame(); // Initialize
 });
