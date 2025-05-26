@@ -12,21 +12,21 @@ GAMES = [
         "name": "Starship Trader", 
         "description": "Amass a fortune by buying and selling goods across the galaxy in this trading simulation.", 
         "script": "games/game1.js", 
-        "image": "https://images.unsplash.com/photo-1517976547714-72022654653c?w=600&h=400&fit=crop&q=80"
+        "image": "https://images.unsplash.com/photo-1518301590127-978041376c0f?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game2", 
         "name": "Asteroid Miner", 
         "description": "Equip your laser and mine valuable ores from asteroids, managing your power.", 
         "script": "games/game2.js", 
-        "image": "https://images.unsplash.com/photo-1582691011944-57d82ac60059?w=600&h=400&fit=crop&q=80"
+        "image": "https://images.unsplash.com/photo-1607399470940-0470f20cc967?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game3", 
         "name": "Alien Translator", 
         "description": "Translate alien words to English, deciphering an extraterrestrial language.", 
         "script": "games/game3.js", 
-        "image": "https://images.unsplash.com/photo-1505099054665-1217808c69bf?w=600&h=400&fit=crop&q=80"
+        "image": "https://images.unsplash.com/photo-1581093447478-27a0ef529890?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game4", 
@@ -54,7 +54,7 @@ GAMES = [
         "name": "Drone Escape", 
         "description": "Pilot your drone through a perilous urban canyon, evading security patrols and obstacles.", 
         "script": "games/game7.js", 
-        "image": "https://images.unsplash.com/photo-1580974928064-7cb1780a000f?w=600&h=400&fit=crop&q=80"
+        "image": "https://images.unsplash.com/photo-1527153999045-54c65b05743e?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game8", 
@@ -75,7 +75,7 @@ GAMES = [
         "name": "Stealth Infiltrator", 
         "description": "A turn-based strategy game. Evade guards, bypass security, and reach your objective undetected.", 
         "script": "games/game10.js", 
-        "image": "https://images.unsplash.com/photo-1506784653500-2195bbf7c02a?w=600&h=400&fit=crop&q=80"
+        "image": "https://images.unsplash.com/photo-1569705461980-c21d0f733013?w=600&h=400&fit=crop&q=80"
     }
 ]
 
