@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -9,45 +9,45 @@ app = Flask(__name__)
 GAMES = [
     {
         "id": "game1", 
-        "name": "Glitch Clicker", 
-        "description": "Continuously click to generate 'glitches' and increase your error count in this quirky clicker.", 
+        "name": "Starship Trader", 
+        "description": "Amass a fortune by buying and selling goods across the galaxy in this trading simulation.", 
         "script": "games/game1.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Glitch+Clicker"
+        "image": "https://via.placeholder.com/600x400.png?text=Starship+Trader"
     },
     {
         "id": "game2", 
-        "name": "Code Breaker Protocol", 
-        "description": "Attempt to guess the secret numerical sequence to bypass security. Limited attempts!", 
+        "name": "Asteroid Miner", 
+        "description": "Equip your laser and mine valuable ores from asteroids, managing your power.", 
         "script": "games/game2.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Code+Breaker"
+        "image": "https://via.placeholder.com/600x400.png?text=Asteroid+Miner"
     },
     {
         "id": "game3", 
-        "name": "Data Stream Defender", 
-        "description": "Protect the data stream by typing out the falling words before they overwhelm the system.", 
+        "name": "Alien Translator", 
+        "description": "Translate alien words to English, deciphering an extraterrestrial language.", 
         "script": "games/game3.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Data+Stream+Defender"
+        "image": "https://via.placeholder.com/600x400.png?text=Alien+Translator"
     },
     {
         "id": "game4", 
-        "name": "Neon Racer", 
-        "description": "Pilot your vehicle through a high-speed neon course, avoiding oncoming obstacles.", 
+        "name": "Space Navigator", 
+        "description": "Navigate your spaceship to designated coordinates in the vastness of space.", 
         "script": "games/game4.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Neon+Racer"
+        "image": "https://via.placeholder.com/600x400.png?text=Space+Navigator"
     },
     {
         "id": "game5", 
-        "name": "Memory Matrix", 
-        "description": "Test your recall by matching pairs of cyberpunk-themed symbols on the memory grid.", 
+        "name": "Code Breaker", 
+        "description": "Guess the secret numerical code within a limited number of attempts.", 
         "script": "games/game5.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Memory+Matrix"
+        "image": "https://via.placeholder.com/600x400.png?text=Code+Breaker"
     },
     {
         "id": "game6", 
-        "name": "System Shock Sequence", 
-        "description": "Memorize and repeat increasingly complex sequences of light and sound in this retro challenge.", 
+        "name": "Galactic Quizmaster", 
+        "description": "Test your knowledge with a variety of questions about space and science fiction.", 
         "script": "games/game6.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=System+Shock+Sequence"
+        "image": "https://via.placeholder.com/600x400.png?text=Galactic+Quizmaster"
     },
     {
         "id": "game7", 
