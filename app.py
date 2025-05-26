@@ -12,70 +12,70 @@ GAMES = [
         "name": "Starship Trader", 
         "description": "Amass a fortune by buying and selling goods across the galaxy in this trading simulation.", 
         "script": "games/game1.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Starship+Trader"
+        "image": "https://images.unsplash.com/photo-1517976547714-72022654653c?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game2", 
         "name": "Asteroid Miner", 
         "description": "Equip your laser and mine valuable ores from asteroids, managing your power.", 
         "script": "games/game2.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Asteroid+Miner"
+        "image": "https://images.unsplash.com/photo-1582691011944-57d82ac60059?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game3", 
         "name": "Alien Translator", 
         "description": "Translate alien words to English, deciphering an extraterrestrial language.", 
         "script": "games/game3.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Alien+Translator"
+        "image": "https://images.unsplash.com/photo-1505099054665-1217808c69bf?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game4", 
         "name": "Space Navigator", 
         "description": "Navigate your spaceship to designated coordinates in the vastness of space.", 
         "script": "games/game4.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Space+Navigator"
+        "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game5", 
         "name": "Code Breaker", 
         "description": "Guess the secret numerical code within a limited number of attempts.", 
         "script": "games/game5.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Code+Breaker"
+        "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game6", 
         "name": "Galactic Quizmaster", 
         "description": "Test your knowledge with a variety of questions about space and science fiction.", 
         "script": "games/game6.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Galactic+Quizmaster"
+        "image": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game7", 
         "name": "Drone Escape", 
         "description": "Pilot your drone through a perilous urban canyon, evading security patrols and obstacles.", 
         "script": "games/game7.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Drone+Escape"
+        "image": "https://images.unsplash.com/photo-1580974928064-7cb1780a000f?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game8", 
         "name": "Net Runner's Gauntlet", 
         "description": "A high-speed infinite runner. Dodge incoming data packets and breach virtual firewalls.", 
         "script": "games/game8.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Net+Runner+Gauntlet"
+        "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game9", 
         "name": "Cybernetic Sorter", 
         "description": "Rapidly categorize incoming data fragments into their designated slots before the system buffer overflows.", 
         "script": "games/game9.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Cybernetic+Sorter"
+        "image": "https://images.unsplash.com/photo-1618477388954-7852f32655ec?w=600&h=400&fit=crop&q=80"
     },
     {
         "id": "game10", 
         "name": "Stealth Infiltrator", 
         "description": "A turn-based strategy game. Evade guards, bypass security, and reach your objective undetected.", 
         "script": "games/game10.js", 
-        "image": "https://via.placeholder.com/600x400.png?text=Stealth+Infiltrator"
+        "image": "https://images.unsplash.com/photo-1506784653500-2195bbf7c02a?w=600&h=400&fit=crop&q=80"
     }
 ]
 
