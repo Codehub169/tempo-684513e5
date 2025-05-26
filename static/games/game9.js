@@ -7,184 +7,166 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    gameContainer.innerHTML = ''; // Clear 'Loading...'
+    let score = 0;
+    let fragmentsProcessed = 0;
+    let timerId = null;
+    let currentFragment = null;
+    let timeLeft = 0;
 
-    const title = document.createElement('h3');
-    title.textContent = 'Cybernetic Sorter';
-    title.className = 'game-title-style';
-    gameContainer.appendChild(title);
+    const FRAGMENTS_TO_PROCESS = 15;
+    const TIMEOUT_PENALTY = 5;
+    const VOLATILE_CORRECT_BONUS = 20;
+    const VOLATILE_MISHANDLE_PENALTY_FACTOR = 1; // Multiplies the fragment's negative value
 
-    const fragmentDisplay = document.createElement('p');
-    fragmentDisplay.className = 'game-text-style';
-    fragmentDisplay.style.minHeight = '4em'; // Increased minHeight for better display of fragment properties
-    fragmentDisplay.style.marginBottom = '15px';
-    fragmentDisplay.style.border = '1px dashed var(--accent-2)';
-    fragmentDisplay.style.padding = '10px';
-    gameContainer.appendChild(fragmentDisplay);
-
-    const statusDisplay = document.createElement('p');
-    statusDisplay.className = 'game-text-style';
-    statusDisplay.style.minHeight = '2em';
-    statusDisplay.setAttribute('aria-live', 'polite');
-    gameContainer.appendChild(statusDisplay);
-
-    const scoreDisplay = document.createElement('p');
-    scoreDisplay.className = 'game-text-style';
-    scoreDisplay.style.fontSize = '1em';
-    gameContainer.appendChild(scoreDisplay);
-
-    const livesDisplay = document.createElement('p');
-    livesDisplay.className = 'game-text-style';
-    livesDisplay.style.fontSize = '1em';
-    gameContainer.appendChild(livesDisplay);
-
-    const binsContainer = document.createElement('div');
-    binsContainer.style.marginTop = '20px';
-    binsContainer.style.display = 'flex';
-    binsContainer.style.justifyContent = 'center';
-    binsContainer.style.gap = '10px';
-    binsContainer.style.flexWrap = 'wrap';
-    gameContainer.appendChild(binsContainer);
-
-    const restartButton = document.createElement('button');
-    restartButton.className = 'game-button';
-    restartButton.style.marginTop = '20px';
-    restartButton.style.display = 'none';
-    restartButton.onclick = startGame; // Assign event handler directly
-    gameContainer.appendChild(restartButton);
-
-    let score;
-    let lives;
-    let currentFragment;
-
-    const MAX_LIVES = 3;
-    const TARGET_SCORE = 100; // Points to win
-    const POINTS_PER_CORRECT_SORT = 10;
-
-    const fragmentProperties = {
-        type: ['Encrypted', 'Raw Data', 'Corrupted', 'Priority'],
-        size: ['Small', 'Medium', 'Large'],
-        sensitivity: ['Low', 'Medium', 'High']
-    };
-
-    // Order matters for determining the 'best' bin if conditions overlap.
-    // Quarantine is highest priority for Corrupted.
-    // Secure Archive and Fast Processing are next.
-    // General Storage is a fallback.
-    const sortingBins = [
-        { name: 'Quarantine', condition: (frag) => frag.type === 'Corrupted' },
-        { name: 'Secure Archive', condition: (frag) => frag.type === 'Encrypted' && frag.sensitivity === 'High' },
-        { name: 'Fast Processing', condition: (frag) => frag.type === 'Priority' && frag.size !== 'Large' },
-        { name: 'General Storage', condition: (frag) => true } // Catches anything not meeting stricter criteria above
+    const fragmentTypes = [
+        { type: 'Alpha', color: 'var(--accent-1)', category: 'A', value: 10 },
+        { type: 'Beta', color: 'var(--accent-2)', category: 'B', value: 10 },
+        { type: 'Gamma', color: 'var(--highlight-color)', category: 'A', value: 15 },
+        { type: 'Delta', color: 'var(--success-color)', category: 'B', value: 15 },
+        { type: 'Omega', color: 'var(--error-color)', category: 'SPECIAL', value: -25, special: 'volatile' }
     ];
 
-    function generateFragment() {
-        return {
-            type: fragmentProperties.type[Math.floor(Math.random() * fragmentProperties.type.length)],
-            size: fragmentProperties.size[Math.floor(Math.random() * fragmentProperties.size.length)],
-            sensitivity: fragmentProperties.sensitivity[Math.floor(Math.random() * fragmentProperties.sensitivity.length)]
-        };
+    const categories = {
+        'A': { name: 'System Core Data', buttonLabel: 'Sort to Core (A)' },
+        'B': { name: 'Network Packets', buttonLabel: 'Sort to Network (B)' },
+        'SPECIAL': { name: 'Volatile Fragments', buttonLabel: 'Handle Volatile'}
+    };
+
+    // Initial HTML structure
+    gameContainer.innerHTML = `
+        <h3 class='game-title-style'>Cybernetic Sorter</h3>
+        <p class='game-text-style'>Rapidly categorize incoming data fragments. Beware of 'Volatile' fragments!</p>
+        <div id='cs-fragment-display' style='width: 100px; height: 100px; border: 2px solid white; margin: 20px auto; display: flex; align-items: center; justify-content: center; font-size: 1.5em; transition: background-color 0.3s, border-color 0.3s;'></div>
+        <p class='game-text-style'>Time Left: <span id='cs-timer'>0</span>s</p>
+        <div id='cs-buttons' style='margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;'></div>
+        <p class='game-text-style'>Score: <span id='cs-score'>0</span> | Processed: <span id='cs-processed'>0</span>/${FRAGMENTS_TO_PROCESS}</p>
+        <p class='game-text-style' id='cs-feedback' style='min-height: 1.2em; margin-top:10px;' aria-live='polite'></p>
+        <button id='cs-start-button' class='game-button' style='margin-top:10px;'>Start Sorting</button>
+    `;
+
+    const fragmentDisplay = document.getElementById('cs-fragment-display');
+    const timerDisplay = document.getElementById('cs-timer');
+    const buttonsContainer = document.getElementById('cs-buttons');
+    const scoreDisplay = document.getElementById('cs-score');
+    const processedDisplay = document.getElementById('cs-processed');
+    const feedbackDisplay = document.getElementById('cs-feedback');
+    const startButton = document.getElementById('cs-start-button');
+
+    if (!fragmentDisplay || !timerDisplay || !buttonsContainer || !scoreDisplay || !processedDisplay || !feedbackDisplay || !startButton) {
+        console.error('Critical game elements not found for Cybernetic Sorter.');
+        return;
     }
     
-    function determineCorrectBinName(fragment) {
-        if (fragment.type === 'Corrupted') return 'Quarantine';
-        if (fragment.type === 'Encrypted' && fragment.sensitivity === 'High') return 'Secure Archive';
-        if (fragment.type === 'Priority' && fragment.size !== 'Large') return 'Fast Processing';
-        // Fallback for all other cases, including 'Raw Data' or 'Low Sensitivity' not covered by specific rules.
-        return 'General Storage'; 
+    function handleSort(selectedCategory) {
+        clearInterval(timerId);
+        fragmentsProcessed++;
+        processedDisplay.textContent = `${fragmentsProcessed}/${FRAGMENTS_TO_PROCESS}`;
+        let correctSort = false;
+
+        if (selectedCategory === 'TIMEOUT') {
+            feedbackDisplay.textContent = `Timeout! Fragment ${currentFragment.type} lost.`;
+            feedbackDisplay.style.color = 'var(--error-color)';
+            score -= TIMEOUT_PENALTY;
+        } else if (currentFragment.special === 'volatile') {
+            if (selectedCategory === 'SPECIAL') {
+                feedbackDisplay.textContent = `Volatile fragment ${currentFragment.type} handled correctly!`;
+                feedbackDisplay.style.color = 'var(--success-color)';
+                score += VOLATILE_CORRECT_BONUS;
+                correctSort = true;
+            } else {
+                feedbackDisplay.textContent = `Volatile fragment ${currentFragment.type} mis-handled! System shock!`;
+                feedbackDisplay.style.color = 'var(--error-color)';
+                // currentFragment.value is negative, so adding it applies a penalty.
+                score += currentFragment.value * VOLATILE_MISHANDLE_PENALTY_FACTOR;
+            }
+        } else if (selectedCategory === currentFragment.category) {
+            feedbackDisplay.textContent = `Correct! ${currentFragment.type} sorted to ${categories[currentFragment.category].name}.`;
+            feedbackDisplay.style.color = 'var(--success-color)';
+            score += currentFragment.value;
+            correctSort = true;
+        } else {
+            feedbackDisplay.textContent = `Incorrect! ${currentFragment.type} belongs to ${categories[currentFragment.category].name}.`;
+            feedbackDisplay.style.color = 'var(--error-color)';
+            score -= Math.floor(currentFragment.value / 2); // Penalty for mis-sort
+        }
+        
+        scoreDisplay.textContent = score;
+
+        if (fragmentsProcessed >= FRAGMENTS_TO_PROCESS) {
+            endGame();
+        } else {
+            // Disable buttons briefly while feedback is shown
+            buttonsContainer.querySelectorAll('.game-button').forEach(btn => btn.disabled = true);
+            setTimeout(() => {
+                buttonsContainer.querySelectorAll('.game-button').forEach(btn => btn.disabled = false);
+                nextFragment();
+            }, correctSort ? 700 : 1800); // Faster if correct, longer to read error
+        }
     }
 
-    function updateDisplays() {
-        scoreDisplay.textContent = `Score: ${score}`;
-        livesDisplay.textContent = `Integrity Checks Remaining: ${lives}`;
-        livesDisplay.style.color = lives < 2 ? 'var(--error-color)' : 'var(--text-color)';
+    function generateButtons() {
+        buttonsContainer.innerHTML = '';
+        Object.keys(categories).forEach(catKey => {
+            const button = document.createElement('button');
+            button.className = 'game-button';
+            button.textContent = categories[catKey].buttonLabel;
+            button.addEventListener('click', () => handleSort(catKey));
+            buttonsContainer.appendChild(button);
+        });
+    }
+
+    function nextFragment() {
+        if (timerId) clearInterval(timerId);
+        currentFragment = fragmentTypes[Math.floor(Math.random() * fragmentTypes.length)];
+        
+        // Display first 3 letters, uppercase
+        fragmentDisplay.textContent = currentFragment.type.substring(0,3).toUpperCase(); 
+        fragmentDisplay.style.backgroundColor = currentFragment.color;
+        fragmentDisplay.style.borderColor = currentFragment.special === 'volatile' ? 'var(--highlight-color)' : 'var(--primary-text)';
+        fragmentDisplay.style.color = currentFragment.special === 'volatile' ? 'var(--primary-bg)' : 'var(--primary-text)';
+
+        timeLeft = currentFragment.special === 'volatile' ? 3 : 5; // Less time for volatile
+        timerDisplay.textContent = timeLeft + 's';
+        timerDisplay.style.color = 'var(--text-color)';
+
+        timerId = setInterval(() => {
+            timeLeft--;
+            timerDisplay.textContent = timeLeft + 's';
+            if (timeLeft <= 2) {
+                timerDisplay.style.color = 'var(--error-color)';
+            }
+            if (timeLeft <= 0) {
+                handleSort('TIMEOUT');
+            }
+        }, 1000);
     }
 
     function startGame() {
         score = 0;
-        lives = MAX_LIVES;
-        restartButton.style.display = 'none';
-        binsContainer.style.display = 'flex';
-        statusDisplay.textContent = 'Initializing data stream...';
-        statusDisplay.style.color = 'var(--text-color)';
+        fragmentsProcessed = 0;
+        scoreDisplay.textContent = score;
+        processedDisplay.textContent = `${fragmentsProcessed}/${FRAGMENTS_TO_PROCESS}`;
+        feedbackDisplay.textContent = 'Initializing sort sequence...';
+        startButton.style.display = 'none';
+        buttonsContainer.style.display = 'flex';
+        generateButtons();
         nextFragment();
     }
 
-    function nextFragment() {
-        if (score >= TARGET_SCORE) {
-            winGame();
-            return;
-        }
-        if (lives <= 0) {
-            loseGame();
-            return;
-        }
-        currentFragment = generateFragment();
-        fragmentDisplay.innerHTML = `Incoming Fragment:<br>Type: <b>${currentFragment.type}</b><br>Size: <b>${currentFragment.size}</b><br>Sensitivity: <b>${currentFragment.sensitivity}</b>`;
-
-        binsContainer.innerHTML = '';
-        // Use only the defined bins for player choice, not necessarily all possible logic branches for determining correctness.
-        const playerChoiceBins = [
-            { name: 'Secure Archive', displayName: 'Sort to: Secure Archive' },
-            { name: 'Quarantine', displayName: 'Sort to: Quarantine' },
-            { name: 'Fast Processing', displayName: 'Sort to: Fast Processing' },
-            { name: 'General Storage', displayName: 'Sort to: General Storage' }
-        ];
-
-        playerChoiceBins.forEach(binInfo => {
-            const button = document.createElement('button');
-            button.textContent = binInfo.displayName;
-            button.className = 'game-button';
-            button.style.minWidth = '180px';
-            button.onclick = () => handleSort(binInfo.name);
-            binsContainer.appendChild(button);
-        });
-        updateDisplays();
+    function endGame() {
+        clearInterval(timerId);
+        fragmentDisplay.textContent = 'END';
+        fragmentDisplay.style.backgroundColor = 'var(--background-color)';
+        fragmentDisplay.style.borderColor = 'var(--text-color)';
+        fragmentDisplay.style.color = 'var(--text-color)';
+        timerDisplay.textContent = '0s';
+        buttonsContainer.style.display = 'none';
+        feedbackDisplay.textContent = `Sorting Complete! Final Score: ${score}. Processed: ${fragmentsProcessed}.`;
+        feedbackDisplay.style.color = score > (FRAGMENTS_TO_PROCESS * 5) ? 'var(--accent-1)' : 'var(--info-color, var(--accent-2))'; // Adjusted win condition display
+        startButton.textContent = 'Restart Sorter';
+        startButton.style.display = 'inline-block';
     }
-
-    function handleSort(chosenBinName) {
-        const correctBinName = determineCorrectBinName(currentFragment);
-        const isCorrect = (chosenBinName === correctBinName);
-
-        let outcomeMessage;
-        if (isCorrect) {
-            score += POINTS_PER_CORRECT_SORT;
-            outcomeMessage = `Fragment sorted correctly to ${chosenBinName}.`;
-            statusDisplay.style.color = 'var(--success-color)';
-        } else {
-            lives--;
-            outcomeMessage = `Mis-sort! Fragment routed to ${chosenBinName}. Correct bin was ${correctBinName}. Integrity check failed.`;
-            statusDisplay.style.color = 'var(--error-color)';
-        }
-        statusDisplay.textContent = outcomeMessage;
-
-        binsContainer.innerHTML = '<p class="game-text-style">Processing...</p>';
-        setTimeout(() => {
-            nextFragment();
-        }, 2500); // Increased delay for reading feedback
-    }
-
-    function winGame() {
-        statusDisplay.textContent = `Target score reached! ${score} points. Sorting protocols mastered!`;
-        statusDisplay.style.color = 'var(--accent-1)';
-        binsContainer.innerHTML = ''; // Clear bins
-        binsContainer.style.display = 'none';
-        fragmentDisplay.innerHTML = 'All fragments processed. System stable.';
-        restartButton.textContent = 'New Sorting Session';
-        restartButton.style.display = 'block';
-    }
-
-    function loseGame() {
-        statusDisplay.textContent = `Multiple integrity failures! System compromised. Final score: ${score}.`;
-        statusDisplay.style.color = 'var(--error-color)';
-        lives = 0; // Ensure lives is 0
-        updateDisplays(); // Update display to show 0 lives
-        binsContainer.innerHTML = ''; // Clear bins
-        binsContainer.style.display = 'none';
-        fragmentDisplay.innerHTML = 'System critical. Sorting offline.';
-        restartButton.textContent = 'Restart Sorter';
-        restartButton.style.display = 'block';
-    }
-
-    startGame();
+    
+    buttonsContainer.style.display = 'none'; // Hide buttons initially
+    startButton.addEventListener('click', startGame);
 });
